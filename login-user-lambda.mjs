@@ -48,7 +48,10 @@ export const handler = async (event) => {
         // Connexion réussie
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: "Login successful", userId: user.User_Id })
+            body: JSON.stringify({ 
+                message: "Login successful",
+                redirectUrl: "https://projet-vote-s3.s3.eu-west-3.amazonaws.com/home.html"
+            })
         };
 
     } catch (err) {
