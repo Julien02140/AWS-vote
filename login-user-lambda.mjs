@@ -17,7 +17,7 @@ export const handler = async (event) => {
     }
     
     try {
-        // Étape 1: Scanner la table pour trouver l'utilisateur avec le pseudo fourni
+        //Scanner la table pour trouver l'utilisateur avec le pseudo fourni
         const scanParams = {
             TableName: "Users",
             FilterExpression: "pseudo = :pseudo",
@@ -36,7 +36,6 @@ export const handler = async (event) => {
             };
         }
 
-        // Étape 2: Comparer les mots de passe
         const user = scanResult.Items[0];
         if (user.password !== password) {
             return {
@@ -45,12 +44,11 @@ export const handler = async (event) => {
             };
         }
 
-        // Connexion réussie, renvoyer le User_Id dans la réponse
         return {
             statusCode: 200,
             body: JSON.stringify({ 
                 message: "Login successful",
-                userId: user.User_Id,  // Ajout du User_Id dans la réponse
+                userId: user.User_Id,
                 redirectUrl: "https://projet-vote-s3.s3.eu-west-3.amazonaws.com/home.html"
             })
         };

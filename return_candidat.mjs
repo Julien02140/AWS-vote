@@ -3,12 +3,10 @@ import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 
 const ddb = DynamoDBDocument.from(new DynamoDB());
 
-export const handler = async (event) => {
-    // const body = JSON.parse(event.body);  // L'event contient le body de la requête
-    // const id = body.id;  // Extraire l'id du body de la requête   
+export const handler = async (event) => { 
     const { id } = event;
     try {
-        // Convertir 'id' en nombre si nécessaire
+
         const candidateId = Number(id);
 
         if (isNaN(candidateId)) {
@@ -22,7 +20,7 @@ export const handler = async (event) => {
             TableName: "Candidats",
             FilterExpression: "Candidat_Id = :id",
             ExpressionAttributeValues: {
-                ":id": candidateId  // Utilisation de la valeur numérique de l'ID
+                ":id": candidateId
             }
         };
 
@@ -36,7 +34,7 @@ export const handler = async (event) => {
             };
         }
 
-        const candidat = scanResult.Items[0];  // Candidat trouvé
+        const candidat = scanResult.Items[0];
 
         // Retourner la réponse avec les données du candidat
         return {

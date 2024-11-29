@@ -8,7 +8,6 @@ export const handler = async (event) => {
 
     const { lastname, firstname, age, pseudo, email, password } = event;
 
-    // Vérifier que tous les champs sont fournis
     if (!lastname || !firstname || !age || !pseudo || !email || !password) {
         return {
             statusCode: 400,
@@ -17,23 +16,22 @@ export const handler = async (event) => {
     }
 
     try {
-        // Étape 1: Scanner la table pour obtenir le dernier User_Id
+        //Scanner la table pour obtenir le dernier User_Id
         const scanParams = {
             TableName: "Users",
-            ProjectionExpression: "User_Id" // Limiter les données récupérées uniquement à User_Id
+            ProjectionExpression: "User_Id"
         };
         const scanResult = await ddb.scan(scanParams);
 
-        // Trouver le plus grand User_Id
         let maxUserId = 0;
         if (scanResult.Items && scanResult.Items.length > 0) {
             maxUserId = Math.max(...scanResult.Items.map(item => parseInt(item.User_Id, 10)));
         }
 
-        // Incrémenter l'ID pour le nouvel utilisateur
+        //On incrémente l'id pour le nouvel utilisateur
         const newUserId = maxUserId + 1;
 
-        // Étape 2: Ajouter le nouvel utilisateur avec un User_Id incrémenté
+        //Ajout du nouvel utilisateur
         const putParams = {
             TableName: "Users",
             Item: {

@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Description du Candidat</title>
 </head>
 <body class="custom-bg">
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,12 +22,11 @@
                         <a class="nav-link" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/resultat.html">Résultats</a>
                     </li>
                 </ul>
-                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button> <!-- Bouton Déconnexion -->
+                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button>
             </div>
         </div>
     </nav>
     <div id="candidatContainer">
-        <!-- Les détails du candidat seront affichés ici -->
         <p>Chargement des informations...</p>
     </div>
 
@@ -56,7 +53,7 @@
                 });
             
                 if (response.ok) {
-                    const data = await response.json(); // Analyse la réponse principale
+                    const data = await response.json();
                     const lambdaBody = JSON.parse(data.body); // Analyse le champ "body" pour accéder au vrai contenu
                     displayCandidat(lambdaBody.candidat); // Passe l'objet "candidat" à la fonction d'affichage
                 } else {
@@ -96,10 +93,8 @@
                 </div>
             `;
 
-            // Ajouter un gestionnaire pour le formulaire de vote
             document.getElementById('voteForm').addEventListener('submit', async function(event) {
-                event.preventDefault();  // Empêche le rechargement de la page à la soumission
-
+                event.preventDefault();
                 const candidatId = getCandidatId();
                 const vote = "election2024";
                 const userId = localStorage.getItem('userId');
@@ -140,10 +135,9 @@
             window.location.href = 'https://projet-vote-s3.s3.eu-west-3.amazonaws.com/index.html';
         }
 
-        // Initialiser la page
         const candidatId = getCandidatId();
         if (candidatId) {
-            fetchCandidatData(candidatId);  // Récupérer et afficher les infos du candidat
+            fetchCandidatData(candidatId);
         } else {
             document.getElementById('candidatContainer').innerHTML = '<p>ID de candidat manquant dans l\'URL.</p>';
         }

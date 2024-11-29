@@ -15,7 +15,6 @@ export const handler = async (event) => {
     };
 
     try {
-        // Récupérer les votes
         const data = await ddb.query(params);
 
         if (!data.Items || data.Items.length === 0) {
@@ -25,7 +24,6 @@ export const handler = async (event) => {
             };
         }
 
-        // Extraire les Candidat_Id
         const candidatIds = [...new Set(data.Items.map(item => item.Candidat_Id))];
         console.log("IDs des candidats extraits :", candidatIds);
 
@@ -47,18 +45,17 @@ export const handler = async (event) => {
             };
         }
 
-        // Calculer les résultats
+        // Calculer des résultats
         const totalVotes = data.Items.length;
         const result = candidats.map((candidat) => {
             const votesForCandidat = data.Items.filter((item) => item.Candidat_Id === candidat.Candidat_Id).length;
             const percentage = (votesForCandidat / totalVotes) * 100;
             return {
-                label: `${candidat.firstname} ${candidat.Candidat_Name}`, // Nom du candidat
-                percentage: percentage.toFixed(2), // Pourcentage
+                label: `${candidat.firstname} ${candidat.Candidat_Name}`,
+                percentage: percentage.toFixed(2),
             };
         });
 
-        // Retourner la réponse JSON
         return {
             statusCode: 200,
             body: JSON.stringify({
@@ -76,7 +73,6 @@ export const handler = async (event) => {
     }
 };
 
-// Fonction pour récupérer un candidat par ID
 const getCandidatById = async (id) => {
     try {
         const scanParams = {

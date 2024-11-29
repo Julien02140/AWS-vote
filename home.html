@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css"> <!-- Lien vers votre fichier CSS -->
+    <link rel="stylesheet" href="style.css">
     <title>Liste des Candidats</title>
 </head>
 <body class="custom-bg">
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,19 +22,17 @@
                         <a class="nav-link" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/resultat.html">Résultats</a>
                     </li>
                 </ul>
-                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button> <!-- Bouton Déconnexion -->
+                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button>
             </div>
         </div>
     </nav>
 
-    <!-- Contenu principal -->
     <div class="container mt-4">
         <div class="candidat-container">
             <h1>Bienvenue</h1>
             <p>Liste des candidats</p>
             
             <div id="candidatsContainer">
-                <!-- Les candidats seront affichés ici -->
                 <p>Chargement des candidats en cours...</p>
             </div>
         </div>
@@ -44,7 +41,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Fonction pour appeler l'API Lambda via fetch()
         async function fetchCandidats() {
             const candidatsContainer = document.getElementById('candidatsContainer');
             try {
@@ -81,29 +77,24 @@
                 li.setAttribute('data-bs-placement', 'top');
                 li.setAttribute('title', `${candidat.firstname} ${candidat.Candidat_Name}`);
 
-                // Construire l'URL de l'image dynamiquement
+                // Construit l'URL de l'image dynamiquement
                 const imageUrl = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/${candidat.firstname}_${candidat.Candidat_Name}.jpg`;
 
-                // Créer l'élément image
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = `${candidat.firstname} ${candidat.Candidat_Name}`;
                 img.className = 'candidat-image';
 
-                // Créer un lien autour de l'image
                 const link = document.createElement('a');
                 link.href = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/description_candidat.html?id=${candidat.Candidat_Id}`;
-                link.appendChild(img);  // Ajouter l'image au lien
+                link.appendChild(img);
 
-                // Créer un élément de texte pour le prénom du candidat
                 const name = document.createElement('p');
-                name.textContent = `${candidat.firstname} ${candidat.Candidat_Name}`;  // Affiche le prénom et le nom
+                name.textContent = `${candidat.firstname} ${candidat.Candidat_Name}`;
 
-                // Ajouter le lien à l'élément li
                 li.appendChild(link);
-                li.appendChild(name);  // Ajouter le nom sous l'image
+                li.appendChild(name);
 
-                // Ajouter l'élément li à la liste
                 ul.appendChild(li);
             });
 

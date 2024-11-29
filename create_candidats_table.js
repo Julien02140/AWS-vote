@@ -37,7 +37,6 @@ var params = {
   },
 };
 
-// Call DynamoDB to create the table
 ddb.createTable(params, function (err, data) {
   if (err) {
     console.log("Error", err);
