@@ -8,7 +8,26 @@
     <link rel="stylesheet" href="style.css">
     <title>Description du Candidat</title>
 </head>
-<body>
+<body class="custom-bg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/home.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/resultat.html">Résultats</a>
+                    </li>
+                </ul>
+                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button> <!-- Bouton Déconnexion -->
+            </div>
+        </div>
+    </nav>
     <div id="candidatContainer">
         <!-- Les détails du candidat seront affichés ici -->
         <p>Chargement des informations...</p>
@@ -60,20 +79,21 @@
                 return;
             }
 
+            const imageUrl = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/${candidat.firstname}_${candidat.Candidat_Name}.jpg`;
+
             container.innerHTML = `
-                <h4>${candidat.firstname} ${candidat.Candidat_Name}</h4>
-                <img src="${candidat.profile_picture_url}" alt="Photo de ${candidat.firstname} ${candidat.Candidat_Name}" class="img-fluid">
-                <div class="candidat-info">
-                    <p><strong>Âge:</strong> ${candidat.age} ans</p>
-                    <p><strong>Description:</strong> ${candidat.description}</p>
+                <div class="candidat-description">
+                    <h4>${candidat.firstname} ${candidat.Candidat_Name}</h4>
+                    <img src="${imageUrl}" alt="Photo de ${candidat.firstname} ${candidat.Candidat_Name}" class="candidat-img">
+                    <div class="candidat-info">
+                        <p>${candidat.description}</p>
+                    </div>
+                    <p>Le vote est définitif et ne peut pas être changé</p>
+                    <form id="voteForm">
+                        <input type="hidden" id="id" name="id" value="${candidat.id}">
+                        <button class="btn btn-primary" type="submit">Voter pour le candidat</button>
+                    </form>
                 </div>
-                <h4>Noter le candidat</h4>
-                <p>Le vote est deifintitif attention</p>
-                <form id="voteForm">
-                    <label for="voting">Vote</label>
-                    <input type="hidden" id="id" name="id" value="${candidat.id}">
-                    <button class="btn btn-primary" type="submit">Soumettre</button>
-                </form>
             `;
 
             // Ajouter un gestionnaire pour le formulaire de vote
@@ -112,6 +132,14 @@
             });
         }
 
+        // Fonction de déconnexion
+        function logout() {
+            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('authToken');
+
+            window.location.href = 'https://projet-vote-s3.s3.eu-west-3.amazonaws.com/index.html';
+        }
+
         // Initialiser la page
         const candidatId = getCandidatId();
         if (candidatId) {
@@ -119,6 +147,9 @@
         } else {
             document.getElementById('candidatContainer').innerHTML = '<p>ID de candidat manquant dans l\'URL.</p>';
         }
+
+        document.getElementById('logoutButton').addEventListener('click', logout);
+        
     </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

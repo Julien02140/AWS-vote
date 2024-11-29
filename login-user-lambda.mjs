@@ -8,7 +8,7 @@ export const handler = async (event) => {
 
     const { pseudo, password } = event;
 
-    // Vérifier que l'pseudo et le mot de passe sont fournis
+    // Vérifier que le pseudo et le mot de passe sont fournis
     if (!pseudo || !password) {
         return {
             statusCode: 400,
@@ -45,11 +45,12 @@ export const handler = async (event) => {
             };
         }
 
-        // Connexion réussie
+        // Connexion réussie, renvoyer le User_Id dans la réponse
         return {
             statusCode: 200,
             body: JSON.stringify({ 
                 message: "Login successful",
+                userId: user.User_Id,  // Ajout du User_Id dans la réponse
                 redirectUrl: "https://projet-vote-s3.s3.eu-west-3.amazonaws.com/home.html"
             })
         };
@@ -62,5 +63,3 @@ export const handler = async (event) => {
         };
     }
 };
-
-    

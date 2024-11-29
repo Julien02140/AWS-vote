@@ -4,10 +4,9 @@ import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 const ddb = DynamoDBDocument.from(new DynamoDB());
 
 export const handler = async (event) => {
-    console.log("Received event:", JSON.stringify(event, null, 2));
-
-    const { id } = event;  // Assurez-vous que 'id' est bien dans l'événement et est un nombre
-    
+    // const body = JSON.parse(event.body);  // L'event contient le body de la requête
+    // const id = body.id;  // Extraire l'id du body de la requête   
+    const { id } = event;
     try {
         // Convertir 'id' en nombre si nécessaire
         const candidateId = Number(id);
@@ -42,7 +41,10 @@ export const handler = async (event) => {
         // Retourner la réponse avec les données du candidat
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: "Candidat trouvé", candidat })
+            body: JSON.stringify({
+                message: "Candidat trouvé",
+                candidat: candidat
+            })
         };
 
     } catch (err) {

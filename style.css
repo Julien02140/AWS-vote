@@ -1,22 +1,22 @@
 body {
-    background: linear-gradient(to right, #4CAF50, #008CBA); /* Couleur de fond */
-    color: #343a40; /* Couleur du texte */
-    padding: 20px; /* Espacement autour du contenu */
+    background-color: #2C3E50; /* Gris foncé pour le fond */
+    color: #ECF0F1; /* Texte clair pour contraster avec le fond foncé */
 }
 
-h1 {
-    color: #363636; 
-    margin-bottom: 20px; 
+h1, h2, h3, p {
+    font-family: Arial, sans-serif; /* Choix d'une police lisible */
+    color: #ECF0F1; /* Texte clair */
 }
 
 .candidat-container {
-    max-width: 800px; /* Largeur maximale du conteneur */
-    margin: auto; /* Centre le conteneur sur la page */
-    background-color: #ffffff; /* Couleur de fond du conteneur */
-    padding: 20px; /* Espacement à l'intérieur du conteneur */
-    border-radius: 8px; /* Bordure arrondie du conteneur */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère du conteneur */
+    max-width: 800px;
+    margin: auto;
+    background-color: transparent; /* Fond transparent */
+    padding: 20px;
+    border: none; /* Pas de bordure */
+    box-shadow: none; /* Pas d'ombre */
 }
+
 
 img {
     max-width: 100%; /* Ajuste la largeur de l'image pour qu'elle ne dépasse pas la largeur du conteneur */
@@ -41,18 +41,24 @@ img {
     margin: 0 20px 10px 0; /* Ajoute une marge à droite et en bas de chaque élément */
 }
 
-.cnadidat-list-item {
-    width: 200px; /* Ajustez la largeur des éléments en fonction de vos besoins */
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0); /* Ajoutez une ombre douce */
-    background-color: #85ffae31;
-    border-radius: 8px;
+.candidat-list-item {
+    width: 200px; /* Ajuste la largeur des éléments en fonction de vos besoins */
+    margin: 10px; /* Espacement interne pour chaque item */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour donner de la profondeur */
+    background-color: #85ffae31; /* Fond avec un léger vert transparent */
+    border-radius: 8px; /* Bordures arrondies */
+    overflow: hidden; /* Cache tout débordement d'élément interne */
+    display: flex;
+    flex-direction: column; /* Aligne les éléments à l'intérieur en colonne */
+    align-items: center; /* Centre les éléments dans le conteneur */
+    text-align: center; /* Centrer le texte */
 }
 
 .candidat-list-item img {
-    max-width: 100%; /* Ajuste la largeur de l'image pour qu'elle ne dépasse pas la largeur du conteneur parent */
-    border-radius: 8px; /* Ajoute une bordure arrondie à l'image */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère à l'image */
+    width: 300px;  /* Fixe une largeur égale pour toutes les images */
+    height: 300px; /* Fixe une hauteur égale pour toutes les images */
+    object-fit: cover;  /* Maintient les proportions sans déformer l'image, mais recadre si nécessaire */
+    border-radius: 8px;
 }
 
 .back-link {
@@ -64,8 +70,39 @@ img {
     background-color: linear-gradient(to right, #4CAF50, #008CBA); /* Remplacez "yourColor" par la couleur de fond souhaitée */
 }
 
-.candidat-list-item h5 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.candidat-description {
+    width: 80%; /* Contrôle la largeur du conteneur */
+    max-width: 800px; /* Largeur maximale */
+    margin: 0 auto; /* Centre le conteneur horizontalement */
+    padding: 20px;
+    background-color: #f9f9f9; /* Fond doux */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour un effet de profondeur */
+}
+
+/* Image du candidat */
+.candidat-img {
+    width:350px; /* Prend toute la largeur du conteneur */
+    height: 400px; /* Ajuste automatiquement la hauteur */
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Informations sur le candidat */
+.candidat-info {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.candidat-container p {
+    margin: 10px 0;
+    color: black;
+}
+
+#candidatContainer p,
+#candidatContainer h4 {
+    color: #000; /* Texte noir */
 }

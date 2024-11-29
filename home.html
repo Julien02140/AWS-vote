@@ -8,22 +8,46 @@
     <title>Liste des Candidats</title>
 </head>
 <body class="custom-bg">
-    <div class="candidat-container">
-        <h1>Bienvenue</h1>
-        <p>Liste des candidats</p>
-        
-        <div id="candidatsContainer">
-            <!-- Les candidats seront affichés ici -->
-            <p>Chargement des candidats en cours...</p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/home.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://projet-vote-s3.s3.eu-west-3.amazonaws.com/resultat.html">Résultats</a>
+                    </li>
+                </ul>
+                <button class="btn btn-outline-light ms-auto" id="logoutButton">Déconnexion</button> <!-- Bouton Déconnexion -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mt-4">
+        <div class="candidat-container">
+            <h1>Bienvenue</h1>
+            <p>Liste des candidats</p>
+            
+            <div id="candidatsContainer">
+                <!-- Les candidats seront affichés ici -->
+                <p>Chargement des candidats en cours...</p>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Fonction pour appeler l'API Lambda via fetch()
         async function fetchCandidats() {
             const candidatsContainer = document.getElementById('candidatsContainer');
             try {
-                // Appel à l'API Gateway qui déclenche Lambda
                 const response = await fetch('https://w6f8a3lnr6.execute-api.eu-west-3.amazonaws.com/test/liste_candidats');
                 if (!response.ok) {
                     throw new Error('Erreur lors de la récupération des candidats');
@@ -38,7 +62,7 @@
             }
         }
 
-        // Fonction pour afficher les candidats sous forme de boutons
+        // Fonction pour afficher les candidats
         function displayCandidats(candidats) {
             const candidatsContainer = document.getElementById('candidatsContainer');
 
@@ -47,38 +71,56 @@
                 return;
             }
 
-            // Création de la liste HTML
             const ul = document.createElement('ul');
-            ul.className = 'candidat-list'; // Appliquer la classe de la liste
+            ul.className = 'candidat-list';
 
             candidats.forEach(candidat => {
-                // Création de l'élément li pour chaque candidat
                 const li = document.createElement('li');
-                li.className = 'candidat-list-item'; // Appliquer la classe à chaque élément de la liste
+                li.className = 'candidat-list-item';
                 li.setAttribute('data-bs-toggle', 'tooltip');
                 li.setAttribute('data-bs-placement', 'top');
                 li.setAttribute('title', `${candidat.firstname} ${candidat.Candidat_Name}`);
 
-                // Créer un bouton à l'intérieur de la liste
-                const button = document.createElement('button');
-                button.className = 'btn btn-primary w-100'; // Appliquer une classe Bootstrap
-                button.textContent = `${candidat.firstname} ${candidat.Candidat_Name}`;
-                
-                // Ajouter un écouteur d'événement pour rediriger l'utilisateur vers la page de description du candidat
-                button.addEventListener('click', () => {
-                    // Redirection vers la page de description du candidat avec son ID
-                    window.location.href = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/description_candidat.html?id=${candidat.Candidat_Id}`; // Assurez-vous que l'URL correspond à votre logique de routage
-                });
+                // Construire l'URL de l'image dynamiquement
+                const imageUrl = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/${candidat.firstname}_${candidat.Candidat_Name}.jpg`;
 
-                // Ajouter le bouton à l'élément li
-                li.appendChild(button);
+                // Créer l'élément image
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `${candidat.firstname} ${candidat.Candidat_Name}`;
+                img.className = 'candidat-image';
+
+                // Créer un lien autour de l'image
+                const link = document.createElement('a');
+                link.href = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/description_candidat.html?id=${candidat.Candidat_Id}`;
+                link.appendChild(img);  // Ajouter l'image au lien
+
+                // Créer un élément de texte pour le prénom du candidat
+                const name = document.createElement('p');
+                name.textContent = `${candidat.firstname} ${candidat.Candidat_Name}`;  // Affiche le prénom et le nom
+
+                // Ajouter le lien à l'élément li
+                li.appendChild(link);
+                li.appendChild(name);  // Ajouter le nom sous l'image
+
+                // Ajouter l'élément li à la liste
                 ul.appendChild(li);
             });
 
-            // Remplacer le contenu du container avec la liste des candidats
-            candidatsContainer.innerHTML = ''; // Clear the previous content
+
+            candidatsContainer.innerHTML = '';
             candidatsContainer.appendChild(ul);
         }
+
+        // Fonction de déconnexion
+        function logout() {
+            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('authToken');
+
+            window.location.href = 'https://projet-vote-s3.s3.eu-west-3.amazonaws.com/index.html';
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', logout);
 
         fetchCandidats(); // Appeler la fonction pour récupérer et afficher les candidats
     </script>
