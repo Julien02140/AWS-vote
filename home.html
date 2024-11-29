@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- Lien vers votre fichier CSS -->
     <title>Liste des Candidats</title>
 </head>
-<body>
-    <h1>Bienvenue</h1>
-    <p>Liste des candidats</p>
-    
-    <div id="candidatsContainer">
-        <!-- Les candidats seront affichés ici -->
-        <p>Chargement des candidats en cours...</p>
+<body class="custom-bg">
+    <div class="candidat-container">
+        <h1>Bienvenue</h1>
+        <p>Liste des candidats</p>
+        
+        <div id="candidatsContainer">
+            <!-- Les candidats seront affichés ici -->
+            <p>Chargement des candidats en cours...</p>
+        </div>
     </div>
 
     <script>
@@ -28,15 +31,14 @@
 
                 const candidats = await response.json();
                 const body = JSON.parse(candidats.body);
-                alert(candidats);
-                //displayCandidats(candidats);
+                displayCandidats(body);
             } catch (error) {
                 console.error('Erreur:', error);
                 candidatsContainer.innerHTML = '<p>Une erreur est survenue lors du chargement des candidats.</p>';
             }
         }
 
-        // Fonction pour afficher les candidats dans le DOM
+        // Fonction pour afficher les candidats sous forme de boutons
         function displayCandidats(candidats) {
             const candidatsContainer = document.getElementById('candidatsContainer');
 
@@ -47,22 +49,38 @@
 
             // Création de la liste HTML
             const ul = document.createElement('ul');
-            ul.className = 'candidate-list list-unstyled';
+            ul.className = 'candidat-list'; // Appliquer la classe de la liste
 
             candidats.forEach(candidat => {
+                // Création de l'élément li pour chaque candidat
                 const li = document.createElement('li');
-                li.className = 'candidate-list-item mb-4';
+                li.className = 'candidat-list-item'; // Appliquer la classe à chaque élément de la liste
                 li.setAttribute('data-bs-toggle', 'tooltip');
                 li.setAttribute('data-bs-placement', 'top');
-                li.setAttribute('title', candidat.nom);
+                li.setAttribute('title', `${candidat.firstname} ${candidat.Candidat_Name}`);
+
+                // Créer un bouton à l'intérieur de la liste
+                const button = document.createElement('button');
+                button.className = 'btn btn-primary w-100'; // Appliquer une classe Bootstrap
+                button.textContent = `${candidat.firstname} ${candidat.Candidat_Name}`;
+                
+                // Ajouter un écouteur d'événement pour rediriger l'utilisateur vers la page de description du candidat
+                button.addEventListener('click', () => {
+                    // Redirection vers la page de description du candidat avec son ID
+                    window.location.href = `https://projet-vote-s3.s3.eu-west-3.amazonaws.com/description_candidat.html?id=${candidat.Candidat_Id}`; // Assurez-vous que l'URL correspond à votre logique de routage
+                });
+
+                // Ajouter le bouton à l'élément li
+                li.appendChild(button);
                 ul.appendChild(li);
             });
 
-            // Remplacement du contenu du container
-            candidatsContainer.innerHTML = '';
+            // Remplacer le contenu du container avec la liste des candidats
+            candidatsContainer.innerHTML = ''; // Clear the previous content
             candidatsContainer.appendChild(ul);
         }
 
+        fetchCandidats(); // Appeler la fonction pour récupérer et afficher les candidats
     </script>
 </body>
 </html>
