@@ -80,25 +80,27 @@
             document.getElementById('voteForm').addEventListener('submit', async function(event) {
                 event.preventDefault();  // Empêche le rechargement de la page à la soumission
 
-                const candidatId = document.getElementById('id').value;
-                const vote = document.getElementById('vote').value;
+                const candidatId = getCandidatId();
+                const vote = "election2024";
+                const userId = localStorage.getItem('userId');
 
                 // Envoi du vote à Lambda
                 try {
-                    const response = await fetch('https://w6f8a3lnr6.execute-api.eu-west-3.amazonaws.com/test/vote-candidat', {
+                    const response = await fetch('https://w6f8a3lnr6.execute-api.eu-west-3.amazonaws.com/test/vote', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            id: candidatId,  // ID du candidat
-                            vote: vote       // Valeur du vote (1 ou 0)
+                            Vote_Nom: "election_2024",
+                            Candidat_Id:  Number(candidatId),
+                            User_Id:  Number(userId)
                         }),
                     });
 
                     if (response.ok) {
                         const data = await response.json();
-                        alert('Vote enregistré avec succès!');
+                        alert(data.body);
                     } else {
                         console.error('Erreur lors du vote:', response);
                         alert('Une erreur est survenue lors de l\'enregistrement du vote.');

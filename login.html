@@ -52,6 +52,7 @@
 
 
         if (response.ok) {
+            localStorage.setItem('userId', body.userId);
             window.location.href = body.redirectUrl;
         } else {
             alert(result.body); // Affiche le message d'erreur
